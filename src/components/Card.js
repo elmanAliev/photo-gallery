@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import './Card.css'
 
-function Card({name, url, remove, card, addSelectedCard, removeSelectedCard, allSelected }) {
+function Card({ name, url, remove, card, addSelectedCard, removeSelectedCard, allSelected }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
     const cardDeleteButtonClassName = isHovered ? 'card__trash' : 'card__trash card__trash_hide';
     const inactiveCardSelectButtonClassName = isHovered ? 'card__checkbox' : 'card__checkbox card__checkbox_hide';
     const activeCardSelectButtonClassName = (isSelected || allSelected) ? 'card__checkbox card__checkbox_active' : 'card__checkbox_hide';
     const cardSelectButtonClassName = (isSelected || allSelected) ? activeCardSelectButtonClassName : inactiveCardSelectButtonClassName;
-    
 
     function handleMouseHover() {
-        setIsHovered(!isHovered)
+        setIsHovered(true)
     }
     function handleMouseLeave() {
-        setIsHovered(!isHovered)
+        setIsHovered(false)
     }
     function handleSelect() {
         setIsSelected(!isSelected);

@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import './Main.css'
 import Card from './Card';
+import Pagination from './Pagination';
 import data from '../data.js'
 
 function Main() {
     const [cards, setCards] = useState(data);
     const [selectedCards, setSelectedCards] = useState([]);
     const [allSelected, setAllSelected] = useState(false);
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const [cardsPerPage] = useState(6);
+
+    const lastCardIndex = currentPage * cardsPerPage;
+    const firstCardIndex = lastCardIndex - cardsPerPage;
+    const currentCards = cards.slice(firstCardIndex, lastCardIndex)
+
+    function paginate(pageNumber) {
+        setCurrentPage(pageNumber)
+    }
+
+    function prevPage() {
+        setCurrentPage(prev => prev-1)
+        setAllSelected(false)
+    } 
+    function nextPage() {
+        setCurrentPage(prev => prev+1)
+        setAllSelected(false)
+    } 
 
     function handleRemoveCard(card) {
         setCards(cards.filter(c => c.name !== card.name))
@@ -22,12 +42,13 @@ function Main() {
 
     function handleRemoveSelectedCards() {
         setCards(cards.filter(c => selectedCards.indexOf(c) === -1));
-        selectedCards(selectedCards)
+        setSelectedCards([])
+        setAllSelected(false)
     }
 
     function handleSelectAll() {
-        setSelectedCards([...cards])
-        setAllSelected(!allSelected)
+        setSelectedCards([...currentCards])
+        setAllSelected(true)
     }
 
     useEffect(() => {
@@ -47,7 +68,7 @@ function Main() {
             <div className="content">
                 <p className="content__counter">{cards.length} изображений</p>
                 <div className="content__cards">
-                {cards.map((card) => {
+                {currentCards.map((card) => {
                     return <Card
                         name = {card.name}
                         url = {card.sample_url}
@@ -60,7 +81,16 @@ function Main() {
                     />
                     })}
                 </div>
+                
             </div>
+            <Pagination 
+                    cardsPerPage={cardsPerPage}
+                    totalCards={cards.length}
+                    paginate={paginate}
+                    prevPage={prevPage}
+                    nextPage={nextPage}
+                    currentPage={currentPage}
+            />
             <div className="control">
                 <div className="control__wrapper">
                     <div className="control__info">
