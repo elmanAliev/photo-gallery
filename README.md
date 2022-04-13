@@ -1,4 +1,4 @@
-# Проект: Photo Gallery
+# Pet-проект: Photo Gallery
 
 ## Технологии
 * React
